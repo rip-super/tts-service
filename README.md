@@ -9,9 +9,7 @@
 Send a basic TTS request with just text:
 
 ```bash
-curl -X POST "https://tts.sahildash.dev/api" \
-     -H "Content-Type: application/json" \
-     -d '{"text": "Hello world"}'
+curl -X POST "https://tts.sahildash.dev/api" -H "Content-Type: application/json" -d "{\"text\": \"Hello world\"}"
 ```
 
 The response will be JSON containing a `downloadUrl`. Wait until the job is finished, then download the audio:
@@ -60,5 +58,6 @@ uvicorn worker:app --host 0.0.0.0 --port 5001
 
 ## API Documentation
 - API Docs are available [here!](https://tts.sahildash.dev/api/docs)
+
 
 ### Like this project? Feel free to give it a star! Thanks!

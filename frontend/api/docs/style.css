@@ -82,8 +82,17 @@ body {
     transition: background var(--transition), color var(--transition);
 }
 
+html,
+body {
+    height: 100%;
+    background: var(--bg-primary);
+    overflow-x: hidden;
+}
+
+html.dark,
 body.dark {
     background: linear-gradient(to bottom right, #020617, #0f172a, #020617);
+    background-attachment: fixed;
 }
 
 .container {

@@ -69,8 +69,17 @@ body {
     transition: background var(--transition), color var(--transition);
 }
 
+html,
+body {
+    height: 100%;
+    background: var(--bg-primary);
+    overflow-x: hidden;
+}
+
+html.dark,
 body.dark {
     background: linear-gradient(to bottom right, #020617, #0f172a, #020617);
+    background-attachment: fixed;
 }
 
 .container {
@@ -89,7 +98,7 @@ body.dark {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 100vw;
+    width: 100%;
     margin: 0;
     padding: 1rem;
 }
@@ -1067,4 +1076,151 @@ body.loading {
     width: 18px;
     height: 18px;
     opacity: 0.85;
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 100%;
+        max-width: 100%;
+        padding: 1.5rem 1rem;
+    }
+
+    .header-content {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        gap: 0.75rem;
+    }
+
+    .logo {
+        margin-left: 0;
+    }
+
+    .theme-toggle {
+        left: auto;
+        margin-left: auto;
+    }
+
+    .hero {
+        margin-bottom: 2rem;
+    }
+
+    .hero-title {
+        font-size: 1.6rem;
+        line-height: 1.15;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
+        margin-bottom: 2.5rem;
+    }
+
+    .feature-card {
+        padding: 1rem;
+    }
+
+    .tts-interface {
+        padding: 1.25rem;
+        border-radius: 0.9rem;
+        margin-bottom: 3rem;
+    }
+
+    .interface-title {
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+    }
+
+    .textarea-input {
+        height: 170px;
+        font-size: 1rem;
+    }
+
+    .textarea-input.expanded {
+        height: 320px;
+    }
+
+    .generate-btn {
+        width: 100%;
+        margin-left: 0;
+        padding: 1rem;
+        font-size: 1.05rem;
+        border-radius: 0.6rem;
+    }
+
+    .meta-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .dropdown-box {
+        width: 100%;
+        right: 0;
+        left: 0;
+    }
+
+    .audio-controls {
+        gap: 1rem;
+    }
+
+    .control-group {
+        gap: 0.5rem;
+    }
+
+    .icon-btn {
+        width: 44px;
+        height: 44px;
+    }
+
+    .volume-bar {
+        width: 120px;
+    }
+
+    .settings-head {
+        gap: 1rem;
+    }
+
+    .pitch-row {
+        grid-template-columns: 70px 1fr 60px;
+        gap: 0.5rem;
+    }
+
+    .eq-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.6rem;
+    }
+
+    .eq-band {
+        height: 220px;
+    }
+
+    .footer {
+        margin-top: 0;
+    }
+}
+
+@media (max-width: 420px) {
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .popup-body {
+        grid-template-columns: 1fr;
+    }
+
+    .popup-actions {
+        justify-content: flex-end;
+    }
+
+    .volume-bar {
+        width: 105px;
+    }
+
+    .eq-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TTS API Docs</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="shortcut icon" href="../../favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+    <header class="header">
+        <div class="container header-content">
+            <a class="logo" href="/" aria-label="Go to homepage">
+                <svg class="logo-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                    <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                </svg>
+                <span class="logo-text">tts.sahildash.dev</span>
+            </a>
+
+            <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+                <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+
+                <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <main class="container docs">
+        <div class="hero docs-hero">
+            <h1 class="hero-title">TTS API</h1>
+            <p class="hero-subtitle">Simple, fast, self-hostable text-to-speech API.</p>
+
+            <div class="docs-actions">
+                <a class="pill-link" href="/" aria-label="Try the demo">Try it live</a>
+                <a class="pill-link ghost" href="https://github.com/rip-super/tts-api" target="_blank" rel="noreferrer">GitHub</a>
+            </div>
+        </div>
+
+        <section class="tts-interface">
+            <h2 class="interface-title">Quickstart</h2>
+
+            <p class="muted">Send a basic request with just text:</p>
+
+            <pre><code>curl -X POST "https://tts.sahildash.dev/api" \
+  -H "Content-Type: application/json" \
+  -d '{"text": "Hello world"}'</code></pre>
+
+            <p class="muted">Then download the result:</p>
+
+            <pre><code>curl "https://tts.sahildash.dev/download/&lt;jobId&gt;" --output output.mp3</code></pre>
+        </section>
+
+        <section class="tts-interface">
+            <h2 class="interface-title">API Endpoints</h2>
+
+            <div class="endpoint">
+                <div class="endpoint-head">
+                    <span class="method post">POST</span>
+                    <code class="path">/api</code>
+                    <span class="endpoint-title">Submit TTS job</span>
+                </div>
+
+                <div class="endpoint-body">
+                    <h4>Body (JSON)</h4>
+                    <pre><code>{
+  "text": "Your text here",
+  "voice": "en_US-lessac-high",
+  "options": {
+    "speed": 1.0,
+    "volume": 1.0,
+    "audio_variation": 1.0,
+    "speaking_variation": 1.0,
+    "normalize_audio": true
+  }
+}</code></pre>
+
+                    <h4>Response</h4>
+                    <pre><code>{
+  "downloadUrl": "/api/download/&lt;jobId&gt;"
+}</code></pre>
+
+                    <p class="muted">Poll the download URL until it returns <code>200</code>.</p>
+                </div>
+            </div>
+
+            <div class="endpoint-divider"></div>
+
+            <div class="endpoint">
+                <div class="endpoint-head">
+                    <span class="method get">GET</span>
+                    <code class="path">/api/download/&lt;jobId&gt;</code>
+                    <span class="endpoint-title">Download finished audio</span>
+                </div>
+
+                <div class="endpoint-body">
+                    <ul class="status-list">
+                        <li><code>200</code> — MP3 file ready</li>
+                        <li><code>202</code> — Still processing</li>
+                        <li><code>500</code> — Failed (includes error message)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="endpoint-divider"></div>
+
+            <div class="endpoint">
+                <div class="endpoint-head">
+                    <span class="method get">GET</span>
+                    <code class="path">/api/voices</code>
+                    <span class="endpoint-title">List available voices</span>
+                </div>
+
+                <div class="endpoint-body">
+                    <p class="muted">Returns the full <code>voices.json</code> list.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="tts-interface">
+            <h2 class="interface-title">Voice & Options</h2>
+
+            <p class="muted">
+                <strong>voice</strong>: key of the voice (ex: <code>en_US-lessac-high</code>). If omitted, defaults to <code>en_US-lessac-high</code>.
+            </p>
+
+            <div class="table-wrap" role="region" aria-label="Options table" tabindex="0">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Option</th>
+                            <th>Description</th>
+                            <th>Default</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>speed</code></td>
+                            <td>Speech speed multiplier (0.5 slower, 2.0 faster)</td>
+                            <td>1.0</td>
+                        </tr>
+                        <tr>
+                            <td><code>volume</code></td>
+                            <td>Volume multiplier (0.0–1.0)</td>
+                            <td>1.0</td>
+                        </tr>
+                        <tr>
+                            <td><code>audio_variation</code></td>
+                            <td>Variation in audio output</td>
+                            <td>1.0</td>
+                        </tr>
+                        <tr>
+                            <td><code>speaking_variation</code></td>
+                            <td>Variation in speaking style</td>
+                            <td>1.0</td>
+                        </tr>
+                        <tr>
+                            <td><code>normalize_audio</code></td>
+                            <td>Normalize output audio</td>
+                            <td>true</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="tts-interface">
+            <h2 class="interface-title">Example with options</h2>
+
+            <pre><code>curl -X POST "https://tts.sahildash.dev/api" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "text": "Hello world",
+    "voice": "en_US-ryan-high",
+    "options": {
+      "speed": 1.5,
+      "volume": 0.8
+    }
+  }'</code></pre>
+        </section>
+
+        <footer class="footer">
+            <p class="muted">
+                Built by Sahil Dash ·
+                <a class="link" href="https://github.com/rip-super/tts-api" target="_blank">Star on GitHub</a>
+            </p>
+        </footer>
+    </main>
+
+    <script>
+        function getSystemTheme() {
+            return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        }
+
+        function getStoredTheme() {
+            return localStorage.getItem("theme");
+        }
+
+        function setTheme(theme) {
+            if (theme === "dark") {
+                document.documentElement.classList.add("dark");
+                document.body.classList.add("dark");
+            } else {
+                document.documentElement.classList.remove("dark");
+                document.body.classList.remove("dark");
+            }
+            localStorage.setItem("theme", theme);
+        }
+
+        function initTheme() {
+            const storedTheme = getStoredTheme();
+            const theme = storedTheme || getSystemTheme();
+            setTheme(theme);
+        }
+
+        function onThemeToggle() {
+            const currentTheme = document.documentElement.classList.contains("dark") ? "dark" : "light";
+            setTheme(currentTheme === "dark" ? "light" : "dark");
+        }
+
+        initTheme();
+        document.getElementById("themeToggle").addEventListener("click", onThemeToggle);
+        window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
+            if (!getStoredTheme()) setTheme(e.matches ? "dark" : "light");
+        });
+    </script>
+</body>
+
+</html>

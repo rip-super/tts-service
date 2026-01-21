@@ -16,6 +16,11 @@
     --scrollbar-thumb: #cbd5e1;
     --scrollbar-thumb-hover: #94a3b8;
     --transition: 0.3s ease;
+
+    --page-enter-duration: 720ms;
+    --page-enter-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+    --reveal-duration: 650ms;
+    --reveal-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .dark {
@@ -60,6 +65,42 @@
     background-color: var(--accent-color);
 }
 
+.page {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity var(--page-enter-duration) var(--page-enter-ease),
+        transform var(--page-enter-duration) var(--page-enter-ease);
+    will-change: opacity, transform;
+}
+
+html.page-ready .page {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    will-change: opacity, transform;
+}
+
+@keyframes revealFadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+html.page-ready .reveal {
+    animation: revealFadeUp var(--reveal-duration) var(--reveal-ease) forwards;
+    animation-delay: var(--reveal-delay, 0ms);
+}
+
 body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -82,40 +123,9 @@ body.dark {
     background-attachment: fixed;
 }
 
-body.page-loading .page {
-    opacity: 0;
-    transform: translateY(10px);
-    filter: blur(2px);
-}
-
-body.page-ready .page {
-    opacity: 1;
-    transform: translateY(0);
-    filter: blur(0);
-}
-
-.page {
-    transition: opacity 520ms cubic-bezier(.2, .9, .2, 1),
-        transform 520ms cubic-bezier(.2, .9, .2, 1),
-        filter 520ms cubic-bezier(.2, .9, .2, 1);
-}
-
-.fade-item {
-    opacity: 0;
-    transform: translateY(10px);
-    transition: opacity 520ms cubic-bezier(.2, .9, .2, 1),
-        transform 520ms cubic-bezier(.2, .9, .2, 1);
-    transition-delay: var(--d, 0ms);
-}
-
-body.page-ready .fade-item {
-    opacity: 1;
-    transform: translateY(0);
-}
-
 .container {
     max-width: 80rem;
-    width: min(92vw, 980px);
+    width: 65vw;
     margin: 0 auto;
     padding: 3rem 0;
 }
@@ -347,9 +357,8 @@ body:not(.dark) .moon-icon {
 }
 
 .generate-btn {
-    width: min(420px, 100%);
-    margin-left: auto;
-    margin-right: auto;
+    width: 25%;
+    margin-left: 37.5%;
     padding: 1.5rem;
     display: flex;
     align-items: center;
@@ -358,11 +367,11 @@ body:not(.dark) .moon-icon {
     background: var(--accent-color);
     color: #fff;
     border: none;
-    border-radius: 0.6rem;
+    border-radius: 0.375rem;
     font-size: 1.125rem;
     font-weight: 600;
     cursor: pointer;
-    transition: background var(--transition), transform 120ms ease;
+    transition: background var(--transition);
 }
 
 .generate-btn:hover {
@@ -416,7 +425,7 @@ body:not(.dark) .moon-icon {
     top: calc(100% + 0.5rem);
     left: 0;
     right: 0;
-    width: 100%;
+    width: 25vw;
     background: var(--card-bg);
     border: 1px solid var(--input-border);
     border-radius: 0.75rem;
@@ -590,6 +599,7 @@ body:not(.dark) .moon-icon {
 
 .audio-controls {
     margin-top: 0.9rem;
+
     display: flex;
     justify-content: center;
     align-items: center;
@@ -841,7 +851,7 @@ body:not(.dark) .moon-icon {
 }
 
 .audio-settings.open {
-    max-height: 420px;
+    max-height: 100vh;
     opacity: 1;
 }
 
@@ -869,6 +879,30 @@ body:not(.dark) .moon-icon {
 .settings-reset:hover {
     border-color: var(--accent-color);
     background: var(--bg-secondary);
+}
+
+.pitch-row {
+    display: grid;
+    grid-template-columns: 80px 1fr 70px;
+    gap: 0.75rem;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.pitch-label {
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.pitch-value {
+    text-align: right;
+    color: var(--text-secondary);
+    font-variant-numeric: tabular-nums;
+}
+
+.eq-title {
+    font-weight: 600;
+    margin: 0.25rem 0 0.75rem;
 }
 
 .eq-grid {
@@ -1154,6 +1188,7 @@ body.loading {
 
     .generate-btn {
         width: 100%;
+        margin-left: 0;
         padding: 1rem;
         font-size: 1.05rem;
         border-radius: 0.6rem;
@@ -1163,6 +1198,12 @@ body.loading {
         flex-direction: column;
         align-items: flex-start;
         gap: 0.5rem;
+    }
+
+    .dropdown-box {
+        width: 100%;
+        right: 0;
+        left: 0;
     }
 
     .audio-controls {
@@ -1184,6 +1225,11 @@ body.loading {
 
     .settings-head {
         gap: 1rem;
+    }
+
+    .pitch-row {
+        grid-template-columns: 70px 1fr 60px;
+        gap: 0.5rem;
     }
 
     .eq-grid {

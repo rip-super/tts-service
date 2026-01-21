@@ -9,6 +9,7 @@ import subprocess
 import wave
 import numpy as np
 import soundfile as sf
+import torch
 import imageio_ffmpeg as ffmpeg
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
@@ -101,7 +102,7 @@ def run_tts(jobId: str, text: str, voice_key: str | None, options: dict | None =
         raise ValueError(f"Voice '{voice_key}' not found!")
 
     voice_path = VOICE_MAP[voice_key]
-    voice_obj = PiperVoice.load(voice_path)
+    voice_obj = PiperVoice.load(voice_path, use_cuda=torch.cuda.is_available())
 
     chunks = chunk_text(text)
 

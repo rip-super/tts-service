@@ -100,6 +100,18 @@ const vizCtx = vizCanvas.getContext("2d");
 const popupHost = document.getElementById("popupHost");
 let popupActive = null;
 
+function initPageEntrance() {
+    const root = document.documentElement;
+
+    requestAnimationFrame(() => {
+        root.classList.add("page-ready");
+    });
+
+    window.addEventListener("pageshow", (e) => {
+        if (e.persisted) root.classList.add("page-ready");
+    });
+}
+
 function popupEscapeHtml(s) {
     return String(s)
         .replaceAll("&", "&amp;")
@@ -1363,6 +1375,7 @@ function bindEvents() {
 }
 
 function initApp() {
+    initPageEntrance();
     initTheme();
     initUI();
     bindEvents();

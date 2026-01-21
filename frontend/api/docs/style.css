@@ -95,6 +95,37 @@ body.dark {
     background-attachment: fixed;
 }
 
+body.page-loading .page {
+    opacity: 0;
+    transform: translateY(10px);
+    filter: blur(2px);
+}
+
+body.page-ready .page {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+}
+
+.page {
+    transition: opacity 520ms cubic-bezier(.2, .9, .2, 1),
+        transform 520ms cubic-bezier(.2, .9, .2, 1),
+        filter 520ms cubic-bezier(.2, .9, .2, 1);
+}
+
+.fade-item {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 520ms cubic-bezier(.2, .9, .2, 1),
+        transform 520ms cubic-bezier(.2, .9, .2, 1);
+    transition-delay: var(--d, 0ms);
+}
+
+body.page-ready .fade-item {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 .container {
     max-width: 80rem;
     margin: 0 auto;

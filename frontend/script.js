@@ -1,3 +1,9 @@
+const MAX_CHARS = 5000;
+
+const COLOR_GOOD = [76, 175, 80];
+const COLOR_WARN = [255, 183, 77];
+const COLOR_BAD = [229, 115, 115];
+
 const LOADER_FG = "#e9ecff";
 const LOADER_RING = "rgba(96,165,250,0.18)";
 
@@ -99,6 +105,18 @@ const vizCtx = vizCanvas.getContext("2d");
 
 const popupHost = document.getElementById("popupHost");
 let popupActive = null;
+
+function initPageEntrance() {
+    const root = document.documentElement;
+
+    requestAnimationFrame(() => {
+        root.classList.add("page-ready");
+    });
+
+    window.addEventListener("pageshow", (e) => {
+        if (e.persisted) root.classList.add("page-ready");
+    });
+}
 
 function popupEscapeHtml(s) {
     return String(s)
@@ -502,8 +520,20 @@ function populateOptions(list) {
 
 function updateCharCount() {
     const len = textInput.value.length;
-    charCount.textContent = `${len} characters`;
-    charCount.style.color = "#fff";
+    charCount.textContent = `${len} / ${MAX_CHARS} characters`;
+
+    let color;
+    if (len <= MAX_CHARS * 0.8) {
+        const t = len / (MAX_CHARS * 0.8);
+        color = COLOR_GOOD.map((v, i) => Math.round(v + (COLOR_WARN[i] - v) * t));
+    } else if (len <= MAX_CHARS) {
+        const t = (len - MAX_CHARS * 0.8) / (MAX_CHARS * 0.2);
+        color = COLOR_WARN.map((v, i) => Math.round(v + (COLOR_BAD[i] - v) * t));
+    } else {
+        color = COLOR_BAD;
+    }
+
+    charCount.style.color = `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
 }
 
 function toggleExpand() {
@@ -809,6 +839,13 @@ async function generateSpeech() {
     if (!selectedVoice) return popup("Please select a voice", { title: "Missing voice", variant: "warn" });
     if (!text) return popup("Please enter some text", { title: "Missing text", variant: "warn" });
 
+    if (text.length > MAX_CHARS) {
+        return popup(
+            `Text is too long! Maximum ${MAX_CHARS} characters allowed.\n\nWant no character limits? Self-host this project over at https://github.com/rip-super/tts-service`,
+            { title: "Too long", variant: "error" }
+        );
+    }
+
     generateBtn.disabled = true;
     showLoading();
 
@@ -1060,8 +1097,8 @@ function initVoices() {
 }
 
 function initUI() {
-    charCount.textContent = "0 characters";
-    charCount.style.color = "#fff";
+    charCount.textContent = `0 / ${MAX_CHARS} characters`;
+    charCount.style.color = `rgb(${COLOR_GOOD[0]}, ${COLOR_GOOD[1]}, ${COLOR_GOOD[2]})`;
 
     setSpeed("1");
     applyAudioFxToUI();
@@ -1363,6 +1400,7 @@ function bindEvents() {
 }
 
 function initApp() {
+    initPageEntrance();
     initTheme();
     initUI();
     bindEvents();

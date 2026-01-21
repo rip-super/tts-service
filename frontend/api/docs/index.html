@@ -9,7 +9,7 @@
     <link rel="shortcut icon" href="../../favicon.ico" type="image/x-icon">
 </head>
 
-<body class="page-loading">
+<body>
     <header class="header">
         <div class="container header-content">
             <a class="logo" href="/" aria-label="Go to homepage">
@@ -44,45 +44,44 @@
         </div>
     </header>
 
-    <main id="page" class="page">
-        <div class="container docs">
-            <div class="hero docs-hero fade-item">
-                <h1 class="hero-title">TTS API</h1>
-                <p class="hero-subtitle">Simple, fast, self-hostable text-to-speech API.</p>
+    <main class="container docs">
+        <div class="hero docs-hero">
+            <h1 class="hero-title">TTS API</h1>
+            <p class="hero-subtitle">Simple, fast, self-hostable text-to-speech API.</p>
 
-                <div class="docs-actions" style="--d: 80ms;">
-                    <a class="pill-link" href="/" aria-label="Try the demo">Try it live</a>
-                    <a class="pill-link ghost" href="https://github.com/rip-super/tts-service" target="_blank" rel="noreferrer">GitHub</a>
-                </div>
+            <div class="docs-actions">
+                <a class="pill-link" href="/" aria-label="Try the demo">Try it live</a>
+                <a class="pill-link ghost" href="https://github.com/rip-super/tts-service" target="_blank" rel="noreferrer">GitHub</a>
             </div>
+        </div>
 
-            <section class="tts-interface fade-item" style="--d: 120ms;">
-                <h2 class="interface-title">Quickstart</h2>
+        <section class="tts-interface">
+            <h2 class="interface-title">Quickstart</h2>
 
-                <p class="muted">Send a basic request with just text:</p>
+            <p class="muted">Send a basic request with just text:</p>
 
-                <pre><code>curl -X POST "https://tts.sahildash.dev/api" \
+            <pre><code>curl -X POST "https://tts.sahildash.dev/api" \
   -H "Content-Type: application/json" \
   -d '{"text": "Hello world"}'</code></pre>
 
-                <p class="muted">Then download the result:</p>
+            <p class="muted">Then download the result:</p>
 
-                <pre><code>curl "https://tts.sahildash.dev/download/&lt;jobId&gt;" --output output.mp3</code></pre>
-            </section>
+            <pre><code>curl "https://tts.sahildash.dev/download/&lt;jobId&gt;" --output output.mp3</code></pre>
+        </section>
 
-            <section class="tts-interface fade-item" style="--d: 160ms;">
-                <h2 class="interface-title">API Endpoints</h2>
+        <section class="tts-interface">
+            <h2 class="interface-title">API Endpoints</h2>
 
-                <div class="endpoint">
-                    <div class="endpoint-head">
-                        <span class="method post">POST</span>
-                        <code class="path">/api</code>
-                        <span class="endpoint-title">Submit TTS job</span>
-                    </div>
+            <div class="endpoint">
+                <div class="endpoint-head">
+                    <span class="method post">POST</span>
+                    <code class="path">/api</code>
+                    <span class="endpoint-title">Submit TTS job</span>
+                </div>
 
-                    <div class="endpoint-body">
-                        <h4>Body (JSON)</h4>
-                        <pre><code>{
+                <div class="endpoint-body">
+                    <h4>Body (JSON)</h4>
+                    <pre><code>{
   "text": "Your text here",
   "voice": "en_US-lessac-high",
   "options": {
@@ -94,100 +93,99 @@
   }
 }</code></pre>
 
-                        <h4>Response</h4>
-                        <pre><code>{
+                    <h4>Response</h4>
+                    <pre><code>{
   "downloadUrl": "/api/download/&lt;jobId&gt;"
 }</code></pre>
 
-                        <p class="muted">Poll the download URL until it returns <code>200</code>.</p>
-                    </div>
+                    <p class="muted">Poll the download URL until it returns <code>200</code>.</p>
+                </div>
+            </div>
+
+            <div class="endpoint-divider"></div>
+
+            <div class="endpoint">
+                <div class="endpoint-head">
+                    <span class="method get">GET</span>
+                    <code class="path">/api/download/&lt;jobId&gt;</code>
+                    <span class="endpoint-title">Download finished audio</span>
                 </div>
 
-                <div class="endpoint-divider"></div>
+                <div class="endpoint-body">
+                    <ul class="status-list">
+                        <li><code>200</code> — MP3 file ready</li>
+                        <li><code>202</code> — Still processing</li>
+                        <li><code>500</code> — Failed (includes error message)</li>
+                    </ul>
+                </div>
+            </div>
 
-                <div class="endpoint">
-                    <div class="endpoint-head">
-                        <span class="method get">GET</span>
-                        <code class="path">/api/download/&lt;jobId&gt;</code>
-                        <span class="endpoint-title">Download finished audio</span>
-                    </div>
+            <div class="endpoint-divider"></div>
 
-                    <div class="endpoint-body">
-                        <ul class="status-list">
-                            <li><code>200</code> — MP3 file ready</li>
-                            <li><code>202</code> — Still processing</li>
-                            <li><code>500</code> — Failed (includes error message)</li>
-                        </ul>
-                    </div>
+            <div class="endpoint">
+                <div class="endpoint-head">
+                    <span class="method get">GET</span>
+                    <code class="path">/api/voices</code>
+                    <span class="endpoint-title">List available voices</span>
                 </div>
 
-                <div class="endpoint-divider"></div>
-
-                <div class="endpoint">
-                    <div class="endpoint-head">
-                        <span class="method get">GET</span>
-                        <code class="path">/api/voices</code>
-                        <span class="endpoint-title">List available voices</span>
-                    </div>
-
-                    <div class="endpoint-body">
-                        <p class="muted">Returns the full <code>voices.json</code> list.</p>
-                    </div>
+                <div class="endpoint-body">
+                    <p class="muted">Returns the full <code>voices.json</code> list.</p>
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <section class="tts-interface fade-item" style="--d: 200ms;">
-                <h2 class="interface-title">Voice & Options</h2>
+        <section class="tts-interface">
+            <h2 class="interface-title">Voice & Options</h2>
 
-                <p class="muted">
-                    <strong>voice</strong>: key of the voice (ex: <code>en_US-lessac-high</code>). If omitted, defaults to
-                    <code>en_US-lessac-high</code>.
-                </p>
+            <p class="muted">
+                <strong>voice</strong>: key of the voice (ex: <code>en_US-lessac-high</code>). If omitted, defaults to <code>en_US-lessac-high</code>.
+            </p>
 
-                <div class="table-wrap" role="region" aria-label="Options table" tabindex="0">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Option</th>
-                                <th>Description</th>
-                                <th>Default</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><code>speed</code></td>
-                                <td>Speech speed multiplier (0.5 slower, 2.0 faster)</td>
-                                <td>1.0</td>
-                            </tr>
-                            <tr>
-                                <td><code>volume</code></td>
-                                <td>Volume multiplier (0.0–1.0)</td>
-                                <td>1.0</td>
-                            </tr>
-                            <tr>
-                                <td><code>audio_variation</code></td>
-                                <td>Variation in audio output</td>
-                                <td>1.0</td>
-                            </tr>
-                            <tr>
-                                <td><code>speaking_variation</code></td>
-                                <td>Variation in speaking style</td>
-                                <td>1.0</td>
-                            </tr>
-                            <tr>
-                                <td><code>normalize_audio</code></td>
-                                <td>Normalize output audio</td>
-                                <td>true</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
+            <div class="table-wrap" role="region" aria-label="Options table" tabindex="0">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Option</th>
+                            <th>Description</th>
+                            <th>Default</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>speed</code></td>
+                            <td>Speech speed multiplier (0.5 slower, 2.0 faster)</td>
+                            <td>1.0</td>
+                        </tr>
+                        <tr>
+                            <td><code>volume</code></td>
+                            <td>Volume multiplier (0.0–1.0)</td>
+                            <td>1.0</td>
+                        </tr>
+                        <tr>
+                            <td><code>audio_variation</code></td>
+                            <td>Variation in audio output</td>
+                            <td>1.0</td>
+                        </tr>
+                        <tr>
+                            <td><code>speaking_variation</code></td>
+                            <td>Variation in speaking style</td>
+                            <td>1.0</td>
+                        </tr>
+                        <tr>
+                            <td><code>normalize_audio</code></td>
+                            <td>Normalize output audio</td>
+                            <td>true</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
 
-            <section class="tts-interface fade-item" style="--d: 240ms;">
-                <h2 class="interface-title">Example with options</h2>
+        <section class="tts-interface">
+            <h2 class="interface-title">Example with options</h2>
 
-                <pre><code>curl -X POST "https://tts.sahildash.dev/api" \
+            <pre><code>curl -X POST "https://tts.sahildash.dev/api" \
   -H "Content-Type: application/json" \
   -d '{
     "text": "Hello world",
@@ -197,30 +195,17 @@
       "volume": 0.8
     }
   }'</code></pre>
-            </section>
+        </section>
 
-            <footer class="footer fade-item" style="--d: 280ms;">
-                <p class="muted">
-                    Built by Sahil Dash ·
-                    <a class="link" href="https://github.com/rip-super/tts-service" target="_blank">Star on GitHub</a>
-                </p>
-            </footer>
-        </div>
+        <footer class="footer">
+            <p class="muted">
+                Built by Sahil Dash ·
+                <a class="link" href="https://github.com/rip-super/tts-service" target="_blank">Star on GitHub</a>
+            </p>
+        </footer>
     </main>
 
     <script>
-        (function () {
-            const ready = () => {
-                document.body.classList.remove("page-loading");
-                document.body.classList.add("page-ready");
-            };
-            if (document.readyState === "loading") {
-                document.addEventListener("DOMContentLoaded", ready, { once: true });
-            } else {
-                ready();
-            }
-        })();
-
         function getSystemTheme() {
             return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
         }

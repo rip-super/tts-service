@@ -781,6 +781,8 @@ body:not(.dark) .moon-icon {
     text-align: center;
     padding: 1rem 0 2rem;
     margin-top: -12vh;
+    z-index: 9999;
+    position: relative;
 }
 
 .muted {
